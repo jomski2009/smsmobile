@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+<head th:fragment="head">
+    <title th:text="'ImanMobile - ' + ${title}">ImanMobile</title>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <link rel="shortcut icon" href="../../assets/ico/favicon.ico"/>
+    <!-- Bootstrap core CSS -->
+    <link href="/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Custom styles for this template -->
+    <link href="/resources/css/starter-template.css" rel="stylesheet"/>
+
+</head>
+
+<div th:fragment="jscripts">
+    <script src="/resources/js/jquery.min.js"></script>
+    <script src="/resources/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/resources/js/custom.js"></script>
+</div>
+
+<div th:fragment="appcenter-nav-fragment" class="container">
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="navbar-header">
+            <button type="button" data-toggle="collapse" data-target=".navbar-collapse" class="navbar-toggle">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="/" class="navbar-brand home-icon">
+                <span class="glyphicon glyphicon-home"></span> </a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="/appcenter">App Center Home</a></li>
+
+                <!-- Messaging apps -->
+                <li class="dropdown">
+                    <a href="#" data-toggle="dropdown" class="dropdown-toggle"><span>Messaging</span><span
+                            class="more_arrow"> </span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/quicksms">Quick Sms</a></li>
+                        <li><a href="/bulksms">Bulk Sms</a></li>
+                        <li><a href="/smsinbox">Inbox</a></li>
+                    </ul>
+                </li>
+
+                <!-- Utility apps -->
+                <li class="dropdown">
+                    <a href="#" data-toggle="dropdown" class="dropdown-toggle"><span>Utilities &amp; tools</span><span
+                            class="more_arrow"> </span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/contacts">Contacts</a></li>
+                        <li><a href="/analytics">Analytics</a></li>
+                    </ul>
+                </li>
+
+                <!-- Reseller apps -->
+
+
+                <!-- General apps -->
+                <li class="dropdown">
+                    <a href="#" data-toggle="dropdown" class="dropdown-toggle"><span>General</span> <span
+                            class="more_arrow"> </span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/account-settings">Account settings</a></li>
+                    </ul>
+                </li>
+
+            </ul>
+
+            <ul th:object="${user}" class="nav navbar-nav navbar-right user-dropdown">
+
+                <li class="dropdown"><p class="navbar-text"><span>Balance: </span><span
+                        th:text="*{account.balance} + ' R'">46,75 R</span></p></li>
+                <li class="dropdown">
+                    <a href="#" data-toggle="dropdown" class="dropdown-toggle"><span
+                            th:text="*{username}">allangray</span></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-header mtopbottom10">My Account</li>
+                        <li><a href="/account-settings">Account settings</a></li>
+                        <!--<li th:if="${paymentsApp != null}"><a th:href="@{${paymentsApp.appUrl}}" th:text="${paymentsApp.name}">Payments</a></li>-->
+
+                        <li class="divider"></li>
+                        <li class="dropdown-header mtopbottom10">Contact Us</li>
+                        <li><a href="javascript:;" data-toggle="modal" data-target="#contactDialog">Contact</a></li>
+
+                        <li class="divider"></li>
+                        <li class="dropdown-header mtopbottom10">End Session</li>
+                        <li><a href="/logout">Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+    <!-- navbar collapse end -->
+</div>
+
+</body>
+</html>

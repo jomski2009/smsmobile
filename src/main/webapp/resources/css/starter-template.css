@@ -1,0 +1,48 @@
+body {
+    padding-top: 50px;
+}
+
+.no-navbar{
+    padding-top: 0px;
+
+}
+
+.starter-template {
+    padding: 40px 15px;
+    text-align: center;
+}
+
+.col-xs-12 {
+    background-color: green;
+    color: #f5f5f5;
+    text-align: center;
+}
+
+.control-group-extra{
+    margin-bottom: 10px;
+}
+
+.retroHeader {
+    background-color: #F5F5F5;
+    line-height: 56px;
+    padding: 10px;
+}
+
+.retroAppName {
+    color: #FF7000;
+    font-size: 23px;
+    margin: 0;
+}
+
+.padTop{
+    margin-top: 10px;
+}
+
+.user-dropdown{
+    margin-right:10px !important;
+}
+
+h3.appcenter-header{
+    padding-left:15px;
+}
+

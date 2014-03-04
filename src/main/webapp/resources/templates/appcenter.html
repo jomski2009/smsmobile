@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragment::head"></head>
+<body>
+
+<div th:include="fragment::appcenter-nav-fragment">
+
+</div>
+<!-- container -->
+<div class="container">
+    <div class="row">
+        <h3 class="appcenter-header">Messaging</h3>
+        <div class="col-md-4">
+            <div class="well"><a href="/quicksms"><span class="glyphicon glyphicon-send"></span> Quick Sms</a></div>
+        </div>
+        <div class="col-md-4">
+            <div class="well"><a href="/bulksms"><span class="glyphicon glyphicon-envelope"></span> Bulk Sms</a></div>
+        </div>
+        <div class="col-md-4">
+            <div class="well"><a href="/inbox"><span class="glyphicon glyphicon-inbox"></span> Inbox</a></div>
+        </div>
+    </div>
+
+    <div class="row">
+        <h3 class="appcenter-header">Tools and Utilities</h3>
+        <div class="col-md-4">
+            <div class="well"><a href="/contacts"><span class="glyphicon glyphicon-user"></span> Contacts</a></div>
+        </div>
+        <div class="col-md-4">
+            <div class="well"><a href="/reports"><span class="glyphicon glyphicon-stats"></span> Reports</a></div>
+        </div>
+        <div class="col-md-4">
+            <div class="well"><a href="/account-settings"><span class="glyphicon glyphicon-cog"></span> Account Settings</a></div>
+        </div>
+    </div>
+
+</div>
+
+<div th:include="fragment::jscripts"></div>
+</body>
+</html>
