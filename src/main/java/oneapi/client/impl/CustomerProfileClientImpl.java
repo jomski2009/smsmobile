@@ -12,7 +12,10 @@ import oneapi.model.RequestData.Method;
 import oneapi.model.common.AccountBalance;
 import oneapi.model.common.CustomerProfile;
 import oneapi.model.common.LoginResponse;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
+@Service
 public class CustomerProfileClientImpl extends OneAPIBaseClientImpl implements CustomerProfileClient {
 	private static final String CUSTOMER_PROFILE_URL_BASE = "/customerProfile";
 	
