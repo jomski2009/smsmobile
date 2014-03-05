@@ -9,4 +9,6 @@ public interface UserService {
     String createUser(User user);
 
     User findByUsername(String username);
+
+    void save(User person);
 }

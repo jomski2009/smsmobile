@@ -22,7 +22,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String createUser(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole(1); //USER
         Key<User> userKey = ds.save(user);
 
@@ -33,5 +32,10 @@ public class UserServiceImpl implements UserService {
     public User findByUsername(String username) {
         User user = ds.createQuery(User.class).field("_id").equal(username).get();
         return user;
+    }
+
+    @Override
+    public void save(User person) {
+        ds.save(person);
     }
 }

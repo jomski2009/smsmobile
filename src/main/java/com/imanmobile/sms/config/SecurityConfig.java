@@ -44,6 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
         http.authorizeRequests().antMatchers("/appcenter").hasAuthority("USER")
                 .antMatchers("/contacts").hasAuthority("USER")
                 .antMatchers("/quicksms").hasAnyAuthority("USER")
+                .antMatchers("/account-settings").hasAnyAuthority("USER")
                 .antMatchers("/resources/**").permitAll()
                 .anyRequest().permitAll();
 

@@ -15,13 +15,27 @@ import java.util.List;
 public class User {
     @Id
     private String username;
-    private String firstname;
-    private String lastname;
+    private String key;
+    private String accountKey;
+    private String forename;
+    private String surname;
+    private String street;
+    private String city;
+    private String zipCode;
+    private String telephone;
+    private String gsm;
+    private String fax;
     private String email;
-    private String password;
-    private String cellnumber;
+    private String msn;
+    private String skype;
+    private Integer countryId;
+    private Integer timezoneId;
+    private Integer primaryLanguageId;
+    private Integer secondaryLanguageId;
+    private boolean enabled;
     private int role;
-    private boolean active;
+
+    @Reference
     private Account account;
 
     @Reference(lazy = true)
@@ -35,20 +49,84 @@ public class User {
         this.username = username;
     }
 
-    public String getFirstname() {
-        return firstname;
+    public String getKey() {
+        return key;
     }
 
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
+    public void setKey(String key) {
+        this.key = key;
     }
 
-    public String getLastname() {
-        return lastname;
+    public String getAccountKey() {
+        return accountKey;
     }
 
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
+    public void setAccountKey(String accountKey) {
+        this.accountKey = accountKey;
+    }
+
+    public String getForename() {
+        return forename;
+    }
+
+    public void setForename(String forename) {
+        this.forename = forename;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getZipCode() {
+        return zipCode;
+    }
+
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
+    }
+
+    public String getTelephone() {
+        return telephone;
+    }
+
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
+    }
+
+    public String getGsm() {
+        return gsm;
+    }
+
+    public void setGsm(String gsm) {
+        this.gsm = gsm;
+    }
+
+    public String getFax() {
+        return fax;
+    }
+
+    public void setFax(String fax) {
+        this.fax = fax;
     }
 
     public String getEmail() {
@@ -59,36 +137,60 @@ public class User {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
+    public String getMsn() {
+        return msn;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setMsn(String msn) {
+        this.msn = msn;
     }
 
-    public String getCellnumber() {
-        return cellnumber;
+    public String getSkype() {
+        return skype;
     }
 
-    public void setCellnumber(String cellnumber) {
-        this.cellnumber = cellnumber;
+    public void setSkype(String skype) {
+        this.skype = skype;
     }
 
-    public Account getAccount() {
-        return account;
+    public Integer getCountryId() {
+        return countryId;
     }
 
-    public void setAccount(Account account) {
-        this.account = account;
+    public void setCountryId(Integer countryId) {
+        this.countryId = countryId;
     }
 
-    public boolean isActive() {
-        return active;
+    public Integer getTimezoneId() {
+        return timezoneId;
     }
 
-    public void setActive(boolean active) {
-        this.active = active;
+    public void setTimezoneId(Integer timezoneId) {
+        this.timezoneId = timezoneId;
+    }
+
+    public Integer getPrimaryLanguageId() {
+        return primaryLanguageId;
+    }
+
+    public void setPrimaryLanguageId(Integer primaryLanguageId) {
+        this.primaryLanguageId = primaryLanguageId;
+    }
+
+    public Integer getSecondaryLanguageId() {
+        return secondaryLanguageId;
+    }
+
+    public void setSecondaryLanguageId(Integer secondaryLanguageId) {
+        this.secondaryLanguageId = secondaryLanguageId;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     public int getRole() {
@@ -99,11 +201,31 @@ public class User {
         this.role = role;
     }
 
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
+    }
+
     public List<Group> getGroups() {
         return groups;
     }
 
     public void setGroups(List<Group> groups) {
         this.groups = groups;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "username='" + username + '\'' +
+                ", key='" + key + '\'' +
+                ", accountKey='" + accountKey + '\'' +
+                ", forename='" + forename + '\'' +
+                ", surname='" + surname + '\'' +
+                ", enabled=" + enabled +
+                '}';
     }
 }

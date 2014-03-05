@@ -10,7 +10,7 @@ import org.springframework.context.annotation.PropertySources;
  * Created by jome on 2014/02/28.
  */
 
-@ComponentScan
+@ComponentScan(basePackages = {"com.imanmobile.sms", "com.imanmobile.sms.oneapi"})
 @EnableAutoConfiguration
 @PropertySources(value = {
         @PropertySource(value = { "file:./application.properties"})})

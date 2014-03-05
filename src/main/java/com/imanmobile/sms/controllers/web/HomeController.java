@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.math.BigDecimal;
 
 /**
  * Created by jome on 2014/02/28.
@@ -53,7 +54,9 @@ public class HomeController {
         logger.info("Logging current user: " + username);
         User user = userService.findByUsername(username);
         model.addAttribute("user", user);
-        logger.info("Processing new login information");
+        double balance = user.getAccount().getAccountBalance().getBalance();
+        model.addAttribute("balance", balance);
+        logger.info("App Center calls");
         return "appcenter";
     }
 

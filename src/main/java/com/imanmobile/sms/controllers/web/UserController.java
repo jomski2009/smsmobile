@@ -1,11 +1,12 @@
 package com.imanmobile.sms.controllers.web;
 
+import com.imanmobile.sms.domain.Account;
 import com.imanmobile.sms.domain.User;
+import com.imanmobile.sms.oneapi.client.impl.SMSClient;
+import com.imanmobile.sms.oneapi.config.Configuration;
 import com.imanmobile.sms.services.UserService;
-import org.mongodb.morphia.Datastore;
-import org.mongodb.morphia.Key;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -22,6 +23,8 @@ public class UserController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    Configuration configuration;
 
 
     @RequestMapping(value = "signup", method = RequestMethod.GET)
@@ -42,5 +45,20 @@ public class UserController {
         model.addAttribute("userKey", userKey);
         return "user-created";
     }
+
+    @RequestMapping(value = "account-settings", method = RequestMethod.GET)
+    public String getAccountForUser(Model model) {
+        //Do server side validation of the user model.
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userService.findByUsername(username);
+        SMSClient client = new SMSClient(configuration);
+        Account account = client.getCustomerProfileClient().getCustomerAccount();
+
+        model.addAttribute("user", user);
+        model.addAttribute("account", account);
+
+        return "account-settings";
+    }
+
 
 }

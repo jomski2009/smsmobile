@@ -1,6 +1,7 @@
 package com.imanmobile.sms.config;
 
 import com.github.mxab.thymeleaf.extras.dataattribute.dialect.DataAttributeDialect;
+import com.imanmobile.sms.oneapi.client.impl.SMSClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.ViewResolver;
@@ -59,6 +60,10 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         return new MultipartConfigElement("");
     }
 
+    @Bean
+    public com.imanmobile.sms.oneapi.config.Configuration configuration(){
+        return new com.imanmobile.sms.oneapi.config.Configuration();
+    }
 
 }
 
