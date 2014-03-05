@@ -24,14 +24,10 @@ public class User {
     private String zipCode;
     private String telephone;
     private String gsm;
-    private String fax;
     private String email;
-    private String msn;
     private String skype;
     private Integer countryId;
     private Integer timezoneId;
-    private Integer primaryLanguageId;
-    private Integer secondaryLanguageId;
     private boolean enabled;
     private int role;
 
@@ -121,28 +117,12 @@ public class User {
         this.gsm = gsm;
     }
 
-    public String getFax() {
-        return fax;
-    }
-
-    public void setFax(String fax) {
-        this.fax = fax;
-    }
-
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getMsn() {
-        return msn;
-    }
-
-    public void setMsn(String msn) {
-        this.msn = msn;
     }
 
     public String getSkype() {
@@ -167,22 +147,6 @@ public class User {
 
     public void setTimezoneId(Integer timezoneId) {
         this.timezoneId = timezoneId;
-    }
-
-    public Integer getPrimaryLanguageId() {
-        return primaryLanguageId;
-    }
-
-    public void setPrimaryLanguageId(Integer primaryLanguageId) {
-        this.primaryLanguageId = primaryLanguageId;
-    }
-
-    public Integer getSecondaryLanguageId() {
-        return secondaryLanguageId;
-    }
-
-    public void setSecondaryLanguageId(Integer secondaryLanguageId) {
-        this.secondaryLanguageId = secondaryLanguageId;
     }
 
     public boolean isEnabled() {
