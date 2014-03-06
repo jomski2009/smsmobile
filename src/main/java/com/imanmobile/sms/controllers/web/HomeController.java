@@ -39,12 +39,13 @@ public class HomeController {
 
     @RequestMapping(value = "/logout")
     public String doLogout(Model model,  HttpServletRequest request) {
+        logger.info("Logging out current user");
+
         try {
             request.logout();
         } catch (ServletException e) {
             e.printStackTrace();
         }
-        logger.info("Logging out current user");
         return "home";
     }
 

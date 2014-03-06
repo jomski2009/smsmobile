@@ -3,7 +3,9 @@ package com.imanmobile.sms.oneapi.model;
 import java.util.Arrays;
 
 import com.imanmobile.sms.oneapi.model.common.ResourceReference;
+import org.mongodb.morphia.annotations.Entity;
 
+@Entity("smsresults")
 public class SendMessageResult {
 
 	private String clientCorrelator;

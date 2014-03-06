@@ -34,7 +34,7 @@ public class SMSRequest {
 	 @param senderName is the name to appear on the user's terminal as the sender of the message
 	 @param callbackData will be passed back to the notifyURL location, so you can use it to identify the message the receipt relates to (or any other useful data, such as a function name)
 	 */
-	public SMSRequest(String senderAddress, String message, String clientCorrelator, String notifyURL, String senderName, String callbackData, String... recipientAddress) {
+	public SMSRequest(String senderAddress, String message, String clientCorrelator, String notifyURL, String senderName, String callbackData, String[] recipientAddress) {
 		this.senderAddress = senderAddress;	
 		this.message = message;
 		this.clientCorrelator = clientCorrelator;
@@ -86,7 +86,7 @@ public class SMSRequest {
 
 	/**
 	 * (mandatory) contains the message text to send
-	 * @param messageText
+	 * @param message
 	 */
 	public void setMessage(String message) {
 		this.message = message;

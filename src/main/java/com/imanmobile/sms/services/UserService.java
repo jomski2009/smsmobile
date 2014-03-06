@@ -11,4 +11,5 @@ public interface UserService {
     User findByUsername(String username);
 
     void save(User person);
+
 }

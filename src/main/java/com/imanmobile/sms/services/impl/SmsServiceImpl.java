@@ -1,23 +1,21 @@
 package com.imanmobile.sms.services.impl;
 
-import com.google.gson.Gson;
-import com.imanmobile.sms.oneapi.exception.RequestException;
-import com.imanmobile.sms.oneapi.model.LoginRequest;
-import com.imanmobile.sms.oneapi.model.common.LoginResponse;
-import com.imanmobile.sms.services.SmsService;
+import com.imanmobile.sms.domain.Account;
 import com.imanmobile.sms.oneapi.client.impl.SMSClient;
 import com.imanmobile.sms.oneapi.config.Configuration;
 import com.imanmobile.sms.oneapi.model.SMSRequest;
 import com.imanmobile.sms.oneapi.model.SendMessageResult;
+import com.imanmobile.sms.oneapi.model.common.AccountBalance;
 import com.imanmobile.sms.oneapi.model.common.DeliveryInfoList;
-import com.ning.http.util.Base64;
+import com.imanmobile.sms.services.SmsService;
+import org.mongodb.morphia.Datastore;
+import org.mongodb.morphia.query.UpdateOperations;
+import org.mongodb.morphia.query.UpdateResults;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,12 +26,12 @@ import java.util.Map;
 
 @Service
 public class SmsServiceImpl implements SmsService {
-    private String apiUrl = "https://oneapi.infobip.com/";
-    private String versionOneAPISMS = "1/";
-    private String CUSTOMER_PROFILE = "customerProfile";
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    @Autowired
+    Datastore ds;
 
-    private RestTemplate template = new RestTemplate();
+    @Autowired
+    Configuration configuration;
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
     public Map<String, Object> sendSms(String message) {
@@ -61,6 +59,41 @@ public class SmsServiceImpl implements SmsService {
         outcome.put("status", deliveryStatus);
         return outcome;
 
+    }
+
+    @Override
+    public SendMessageResult sendQuickSms(String message, String[] recipients) {
+        int arLength = recipients.length;
+        String[] reclist = new String[arLength];
+
+
+        for(int i =0; i<arLength;i++){
+            reclist[i] = recipients[i].trim();
+        }
+        for (String r : recipients) {
+            logger.info("Recipients: {}", r);
+        }
+
+
+        SMSClient client = new SMSClient(configuration);
+        String senderId = client.getCustomerProfileClient().getCustomerAccount().getDefaultSender();
+
+        SMSRequest smsRequest = new SMSRequest(senderId, message, reclist);
+        //SMSRequest request = new SMSRequest("senderAddress","message to be sent","clientcorrelator","notifyurl","sendername","callbackdata", reclist);
+        SMSRequest request = new SMSRequest(senderId,message,"testrelator",null,senderId,null, reclist);
+        SendMessageResult messageResult = client.getSMSMessagingClient().sendSMS(request);
+        ds.save(messageResult);
+
+        //We should update the balance here, right?
+        String accountKey = client.getCustomerProfileClient().getCustomerAccount().getKey();
+        double balance = client.getCustomerProfileClient().getAccountBalance().getBalance();
+        logger.info("New balance: {}", balance);
+
+        UpdateOperations<Account> updateOperations = ds.createUpdateOperations(Account.class).set("accountBalance.balance", balance);
+        UpdateResults<Account> updateResults = ds.update(ds.createQuery(Account.class).field("_id").equal(accountKey), updateOperations);
+
+
+        return messageResult;
     }
 
 //    @Override

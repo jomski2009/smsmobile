@@ -9,4 +9,6 @@ public interface AccountsService {
     Account getAccountForKey(String accountKey);
 
     String save(Account account);
+
+    void updateAccountBalance(String username);
 }

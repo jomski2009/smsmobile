@@ -5,6 +5,9 @@
 <body>
 <div th:include="fragment::appcenter-nav-fragment"></div>
 <div class="container">
+    <div class="row">
+        <h3>Account Settings</h3>
+    </div>
     <div th:object="${account}">
         <p th:text="*{name}"></p>
 

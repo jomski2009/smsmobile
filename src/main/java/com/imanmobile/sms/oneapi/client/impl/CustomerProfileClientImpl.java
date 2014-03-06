@@ -11,12 +11,15 @@ import com.imanmobile.sms.oneapi.model.RequestData.Method;
 import com.imanmobile.sms.oneapi.model.common.AccountBalance;
 import com.imanmobile.sms.oneapi.model.common.CustomerProfile;
 import com.imanmobile.sms.oneapi.model.common.LoginResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CustomerProfileClientImpl extends OneAPIBaseClientImpl implements CustomerProfileClient {
     private static final String CUSTOMER_PROFILE_URL_BASE = "/customerProfile";
+    Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private List<LoginListener> loginListenersList = null;
     private List<LogoutListener> logoutListenerList = null;
@@ -126,6 +129,7 @@ public class CustomerProfileClientImpl extends OneAPIBaseClientImpl implements C
         if (logoutListenerList != null) {
             for (LogoutListener listener : logoutListenerList) {
                 listener.onLogout();
+                logger.info("Infobip logout completed...");
             }
         }
     }

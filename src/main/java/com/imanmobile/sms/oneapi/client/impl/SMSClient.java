@@ -12,9 +12,9 @@ import com.imanmobile.sms.oneapi.model.common.LoginResponse;
 
 
 public class SMSClient {
-  
-	protected static final String VERSION = "1.0.0"; 
-	
+
+    protected static final String VERSION = "1.0.0";
+
     private CustomerProfileClient customerProfileClient = null;
     private SMSMessagingClient smsMessagingClient = null;
     private HLRClient hlrClient = null;
@@ -22,16 +22,17 @@ public class SMSClient {
     private LoginListener loginListener = null;
     private LogoutListener logoutListener = null;
     private Configuration configuration = null;
-  
+
     //*************************SMSClient initialization***********************************************************************************************************************************************
+
     /**
      * Initialize SMS client using specified 'configuration' parameter
+     *
      * @param configuration - parameter containing OneAPI configuration data
      */
     public SMSClient(Configuration configuration) {
 
         this.configuration = configuration;
-
 
         //Set Login and Logout listeners so that authorization mode can be switched to IBSSO
         setLoginListener();
@@ -39,45 +40,72 @@ public class SMSClient {
 
         //Initialize Clients     
         customerProfileClient = new CustomerProfileClientImpl(configuration, loginListener, logoutListener);
-        smsMessagingClient = new SMSMessagingClientImpl(configuration);   
+        smsMessagingClient = new SMSMessagingClientImpl(configuration);
         hlrClient = new HLRClientImpl(configuration);
         ussdClient = new USSDClientImpl(configuration);
     }
 
+    public SMSClient() {
+        //Set Login and Logout listeners so that authorization mode can be switched to IBSSO
+        setLoginListener();
+        setLogoutListener();
+        configuration = new Configuration();
+
+        //Initialize Clients
+        customerProfileClient = new CustomerProfileClientImpl(configuration, loginListener, logoutListener);
+        smsMessagingClient = new SMSMessagingClientImpl(configuration);
+        hlrClient = new HLRClientImpl(configuration);
+        ussdClient = new USSDClientImpl(configuration);
+
+    }
+
     //*************************SMSClient public***********************************************************************************************************************************************
+
     /**
      * Get Customer Profile client
+     *
      * @return CustomerProfileClient
      */
     public CustomerProfileClient getCustomerProfileClient() {
         return customerProfileClient;
     }
-    
+
     /**
      * Get SMS Messaging client
+     *
      * @return SMSMessagingClient
      */
     public SMSMessagingClient getSMSMessagingClient() {
         return smsMessagingClient;
     }
-     
+
     /**
      * Get HLR client
+     *
      * @return HLRClient
      */
     public HLRClient getHLRClient() {
         return hlrClient;
     }
-    
+
     /**
      * Get USSD client
+     *
      * @return USSDClient
      */
     public USSDClient getUSSDClient() {
         return ussdClient;
     }
-   
-	//*************************SMSClient private***********************************************************************************************************************************************
+
+    public Configuration getConfiguration() {
+        return configuration;
+    }
+
+    public void setConfiguration(Configuration configuration) {
+        this.configuration = configuration;
+    }
+
+    //*************************SMSClient private***********************************************************************************************************************************************
     private void setLoginListener() {
         loginListener = new LoginListener() {
             @Override

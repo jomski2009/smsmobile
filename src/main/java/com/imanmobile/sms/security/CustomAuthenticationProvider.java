@@ -108,7 +108,10 @@ public class CustomAuthenticationProvider extends AbstractUserDetailsAuthenticat
 
                     //Check if the account already exists (We may just be creating additional users.
                     Account acct1 = accountsService.getAccountForKey(account.getKey());
+                    logger.info("Current balance for {} is {}", username, balance.getBalance());
+                    acct1.setAccountBalance(balance);
                     if (acct1 != null) {
+                        accountsService.save(acct1);
                         person.setAccount(acct1);
                         userService.save(person);
                     } else {
@@ -116,6 +119,12 @@ public class CustomAuthenticationProvider extends AbstractUserDetailsAuthenticat
                         person.setAccount(account);
                         userService.save(person);
                     }
+                } else {
+                    //Just update the account balance
+                    Account acct1 = accountsService.getAccountForKey(account.getKey());
+                    acct1.setAccountBalance(balance);
+                    logger.info("Current balance for {} is {}", username, balance.getBalance());
+                    accountsService.save(acct1);
                 }
 
                 //Find the user

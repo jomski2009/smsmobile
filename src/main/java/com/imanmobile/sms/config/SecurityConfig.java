@@ -1,6 +1,8 @@
 package com.imanmobile.sms.config;
 
 import com.imanmobile.sms.security.CustomAuthenticationProvider;
+import com.imanmobile.sms.security.CustomAuthenticationSuccessHandler;
+import com.imanmobile.sms.security.CustomLogoutHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,6 +12,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.logout.LogoutHandler;
 
 /**
  * Created by jome on 2014/02/28.
@@ -39,6 +43,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
         return super.authenticationManager();
     }
 
+    @Bean
+    protected LogoutHandler logoutHandler(){
+        return new CustomLogoutHandler();
+    }
+
+    @Bean
+    protected AuthenticationSuccessHandler successHandler(){
+        return new CustomAuthenticationSuccessHandler();
+    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests().antMatchers("/appcenter").hasAuthority("USER")
@@ -50,7 +64,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
         http.formLogin().defaultSuccessUrl("/appcenter");
         http.formLogin().loginProcessingUrl("/processlogin");
-        http.formLogin().loginPage("/login").permitAll().and().logout().permitAll();
+        http.formLogin().loginPage("/login").permitAll().and().logout().logoutUrl("/logout").addLogoutHandler(logoutHandler()).logoutSuccessUrl("/");
         //http.httpBasic();
         http.csrf().disable();
     }
