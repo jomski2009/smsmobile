@@ -56,6 +56,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests().antMatchers("/appcenter").hasAuthority("USER")
+                .antMatchers("/api/v1/**").hasAuthority("USER")
                 .antMatchers("/contacts").hasAuthority("USER")
                 .antMatchers("/quicksms").hasAnyAuthority("USER")
                 .antMatchers("/account-settings").hasAnyAuthority("USER")
@@ -65,7 +66,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
         http.formLogin().defaultSuccessUrl("/appcenter");
         http.formLogin().loginProcessingUrl("/processlogin");
         http.formLogin().loginPage("/login").permitAll().and().logout().logoutUrl("/logout").addLogoutHandler(logoutHandler()).logoutSuccessUrl("/");
-        //http.httpBasic();
+        http.httpBasic();
         http.csrf().disable();
     }
 }

@@ -1,14 +1,18 @@
 package com.imanmobile.sms.oneapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.mongodb.morphia.annotations.Embedded;
 
 @Embedded
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class SendMessageResultItem {
 
 	private String messageStatus;
 	private String messageId;
 	private String senderAddress;
 	private String destinationAddress;
+    private double price;
+    private String errorMessageId;
 
 	public SendMessageResultItem() {
 		super();
@@ -46,7 +50,23 @@ public class SendMessageResultItem {
 		this.destinationAddress = destinationAddress;
 	}
 
-	@Override
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public String getErrorMessageId() {
+        return errorMessageId;
+    }
+
+    public void setErrorMessageId(String errorMessageId) {
+        this.errorMessageId = errorMessageId;
+    }
+
+    @Override
 	public String toString() {
 		return "SendMessageResultItem {messageStatus=" + messageStatus
 				+ ", messageId=" + messageId + ", senderAddress="

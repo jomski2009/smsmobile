@@ -5,7 +5,6 @@ import com.imanmobile.sms.oneapi.client.impl.SMSClient;
 import com.imanmobile.sms.oneapi.config.Configuration;
 import com.imanmobile.sms.oneapi.model.SMSRequest;
 import com.imanmobile.sms.oneapi.model.SendMessageResult;
-import com.imanmobile.sms.oneapi.model.common.AccountBalance;
 import com.imanmobile.sms.oneapi.model.common.DeliveryInfoList;
 import com.imanmobile.sms.services.SmsService;
 import org.mongodb.morphia.Datastore;
@@ -96,25 +95,4 @@ public class SmsServiceImpl implements SmsService {
         return messageResult;
     }
 
-//    @Override
-//    public LoginResponse login(String username, String password) throws UnsupportedEncodingException {
-//        LoginRequest loginRequest = new LoginRequest();
-//        loginRequest.setPassword(password);
-//        loginRequest.setUsername(username);
-//        String authString = "Basic " + new String(org.apache.commons.codec.binary.Base64.encodeBase64((username + ":" + password).getBytes("UTF-8")));
-//
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.APPLICATION_JSON);
-//        //headers.set("Authorization", authString);
-//        Gson gson = new Gson();
-//        String request = gson.toJson(loginRequest);
-//        HttpEntity entity = new HttpEntity(request, headers);
-//        String url = apiUrl+versionOneAPISMS+CUSTOMER_PROFILE+"/login";
-//        logger.info("Request sent is: {}", request);
-//        logger.info("Called url: {}", url);
-//        logger.info(entity.getHeaders().toString());
-//        ResponseEntity<LoginResponseWrapper> response = template.exchange(url, HttpMethod.POST, entity, LoginResponseWrapper.class);
-//        logger.info("Response: {}",response.getBody().getLogin());
-//        return response.getBody().getLogin();
-//    }
 }
