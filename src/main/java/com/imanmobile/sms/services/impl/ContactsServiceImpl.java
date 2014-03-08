@@ -3,14 +3,15 @@ package com.imanmobile.sms.services.impl;
 import com.imanmobile.sms.domain.Group;
 import com.imanmobile.sms.domain.Recipient;
 import com.imanmobile.sms.domain.User;
+import com.imanmobile.sms.oneapi.config.Configuration;
 import com.imanmobile.sms.services.ContactsService;
 import com.imanmobile.sms.services.UserService;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.Datastore;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -24,6 +25,9 @@ public class ContactsServiceImpl implements ContactsService {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    Configuration configuration;
 
     @Override
     public Group createGroup(String username, Group group) {
@@ -41,27 +45,26 @@ public class ContactsServiceImpl implements ContactsService {
     }
 
     @Override
-    public User createGroup(String name, String description) {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+    public Group createGroup(String name, String description) {
+
+        String username = configuration.getAuthentication().getUsername();
+        User user = ds.createQuery(User.class).field("_id").equal(username).get();
+        String accountKey = user.getAccountKey();
         Group group = new Group();
         group.setName(name);
         group.setDescription(description);
-        group.setUsername(username);
+        group.setAccountKey(accountKey);
+        group.setCreationdate(new Date().getTime());
 
         ds.save(group);
-
-        User user = ds.createQuery(User.class).field("_id").equal(username).get();
-        user.getGroups().add(group);
-        ds.save(user);
-
-        return user;
+        return group;
     }
 
     @Override
     public void addContactsToGroup(String groupid, List<String> contacts) {
         Group group = ds.find(Group.class, "_id", new ObjectId(groupid)).get();
 
-        for(String contact:contacts){
+        for (String contact : contacts) {
             String[] splitContact = contact.split(",");
             Recipient recipient = new Recipient();
             recipient.setCellnumber(splitContact[0].trim());
@@ -86,5 +89,11 @@ public class ContactsServiceImpl implements ContactsService {
         Group group = ds.find(Group.class, "_id", new ObjectId(groupid)).get();
         List<Recipient> recipients = group.getRecipients();
         return recipients;
+    }
+
+    @Override
+    public List<Group> getGroupsForAccount(String accountKey) {
+        List<Group> groups = ds.createQuery(Group.class).field("accountKey").equal(accountKey).asList();
+        return groups;
     }
 }

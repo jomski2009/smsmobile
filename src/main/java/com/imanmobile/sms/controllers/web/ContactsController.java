@@ -1,5 +1,6 @@
 package com.imanmobile.sms.controllers.web;
 
+import com.imanmobile.sms.domain.Group;
 import com.imanmobile.sms.domain.User;
 import com.imanmobile.sms.services.ContactsService;
 import com.imanmobile.sms.services.UserService;
@@ -41,16 +42,21 @@ public class ContactsController {
         model.addAttribute("username", auth.getName());
         User user = userService.findByUsername(auth.getName());
         model.addAttribute("user", user);
-        model.addAttribute("usergroups", user.getGroups());
+        model.addAttribute("usergroups", contactsService.getGroupsForAccount(user.getAccountKey()));
         return "contacts";
     }
 
     @RequestMapping(value = "/contacts/groups/add", method = RequestMethod.POST)
     public String addGroup(Model model, @RequestParam("name") String name, @RequestParam("description") String description) {
-        User user = contactsService.createGroup(name, description);
 
+        Group group = contactsService.createGroup(name, description);
+
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        model.addAttribute("username", auth.getName());
+        User user = userService.findByUsername(auth.getName());
         model.addAttribute("user", user);
-        model.addAttribute("usergroups", user.getGroups());
+        model.addAttribute("usergroups", contactsService.getGroupsForAccount(user.getAccountKey()));
         return "contacts";
     }
 

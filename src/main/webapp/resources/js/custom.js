@@ -5,10 +5,13 @@
 $(document).ready(function () {
     var baseUrl = "http://localhost:8080/api/v1/";
 
+    //Functionality to clear bootstrap modals
+
     //Functionality to pop the modal window for contacts import.
     $('a.contacts-import').click(function () {
         var groupName = $(this).data('groupname');
         var groupId = $(this).data('groupid');
+        alert(groupName);
         $('.modal-header h4').html("Import contacts into " + groupName);
         $('.modal-body #addcontacts-form').attr("action", "/contacts/groups/" + groupId + "/addcontacts");
 
@@ -17,7 +20,7 @@ $(document).ready(function () {
     //Functionality to load the list of contacts on the contactslist modal window.
     $('a.contacts-list').click(function (e) {
         var groupId = $(this).data('groupid');
-        var requestUrl = "http://localhost:8080/api/v1/contacts/groups/" + groupId + "/members";
+        var requestUrl = baseUrl + "contacts/groups/" + groupId + "/members";
 
         $.getJSON(requestUrl, function (data) {
             var tabledata = '<table class="table"><thead><tr><th></th><th>Cell Number</th><th>First Name</th><th>Last Name</th></tr></thead><tbody>';
@@ -47,7 +50,7 @@ $(document).ready(function () {
                 tabledata += lineitem;
             });
 
-            tabledata = tabledata + '</tbody></table>';
+            tabledata += '</tbody></table>';
             $('#quicksms-results-table').html(tabledata);
 
             console.log(data);
@@ -71,6 +74,40 @@ $(document).ready(function () {
         $('span.chars-left').html("Characters left: " + (160 - messageCount));
 
     });
+
+    //Functionality to handle the processing of group creation
+    $('#addgroups').submit(function (evt) {
+        evt.preventDefault();
+
+        var groupAddUrl = baseUrl + "contacts/groups/add";
+        var formData = $(this).serializeObject();
+        var fd = JSON.stringify(formData);
+
+        console.log(formData);
+        console.log(fd);
+
+        $.ajax({type: 'POST', url: groupAddUrl, contentType: 'application/json', data: fd, dataType: 'json'}).done(function (data) {
+            console.log(data);
+            var groupRow = '<tr><td>' + data.name + '</td><td>' + data.recipients.length + '</td><td><div class="btn-group"><button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">Operations <span class="caret"></span></button><ul class="dropdown-menu" role="menu"><li><a class="contacts-import" data:groupid="' + data.groupidString + '" data:groupname="' + data.name + '" href="#import-data" data-toggle="modal" data-target="#import-data">Import data</a></li><li><a class="contacts-list" data:groupid="' + data.groupidString + '" href="#contactlist" data-toggle="modal" data-target="#contactlist">Members</a></li><li class="divider"></li><li><a href="#">Export Data</a></li></ul></div></td></tr>';
+            $('#group-listing-table tbody').append(groupRow);
+        });
+
+        $('#addgroupform').modal('toggle');
+
+
+
+//        $.post(baseUrl + "contacts/groups/add", parsedJson, function (data) {
+//            console.log(data);
+//            var groupRow = '<tr><td>'+data.name+'</td><td>'+data.recipients.length+'</td><td><div class="btn-group"><button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">Operations <span class="caret"></span></button><ul class="dropdown-menu" role="menu"><li><a class="contacts-import" data:groupid="'+data.groupidString +'" data:groupname="'+data.name+'" href="#import-data" data-toggle="modal" data-target="#import-data">Import data</a></li><li><a class="contacts-list" data:groupid="'+data.groupidString+'" href="#contactlist" data-toggle="modal" data-target="#contactlist">Members</a></li><li class="divider"></li><li><a href="#">Export Data</a></li></ul></div></td></tr>';
+//             $('#group-listing-table tbody').append(groupRow);
+//        });
+
+    });
+
+    $('#addgroupform').on('hidden.bs.modal', function (e) {
+        $('input').val('');
+    });
+
 
 });
 

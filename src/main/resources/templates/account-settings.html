@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragment::head">
+</head>
+<body>
+<div th:include="fragment::appcenter-nav-fragment"></div>
+<div class="container">
+    <div class="row">
+        <h3>Account Settings</h3>
+    </div>
+    <div th:object="${account}">
+        <p th:text="*{name}"></p>
+
+        <p th:text="*{key}"></p>
+   </div>
+</div>
+
+
+<div th:include="fragment::jscripts"></div>
+</body>
+</html>

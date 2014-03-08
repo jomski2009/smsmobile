@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragment::head"></head>
+<body>
+<div class="container">
+    <h1>New Account Signup</h1>
+
+    <form action="#" th:action="@{/user/create}" th:object="${user}" method="post">
+        <h3>Account Information</h3>
+
+        <div class="form-group">
+            <div class="input-group">
+                <input class="form-control" type="text" th:field="*{account.name}" placeholder="Account Name"/>
+            </div>
+        </div>
+
+        <h3>User Information</h3>
+
+        <div class="form-group">
+            <div class="input-group">
+                <input class="form-control" type="text" th:field="*{username}" placeholder="Username"/>
+            </div>
+
+        </div>
+        <div class="form-group">
+            <div class="input-group">
+
+                <input class="form-control" type="text" th:field="*{firstname}" placeholder="First name"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="input-group">
+                <input class="form-control" type="text" th:field="*{lastname}" placeholder="Last name"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="input-group">
+                <input class="form-control" type="text" th:field="*{cellnumber}" placeholder="Mobile Number"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="input-group">
+                <input class="form-control" type="email" th:field="*{email}" placeholder="Email Address"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="input-group">
+                <input class="form-control" type="password" th:field="*{password}" placeholder="Password" name="password"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="input-group">
+                <input class="form-control" type="password"  placeholder="Confirm Password" name="confirmpassword"/>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-default">Sign Up!</button>
+        </div>
+    </form>
+</div>
+
+<div th:include="fragment :: jscripts"></div>
+<script src="/resources/bootstrap/js/validate.min.js"></script>
+</body>
+</html>

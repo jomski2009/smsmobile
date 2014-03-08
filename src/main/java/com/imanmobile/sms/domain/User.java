@@ -4,9 +4,6 @@ import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.Reference;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by jome on 2014/02/28.
  */
@@ -33,9 +30,6 @@ public class User {
 
     @Reference
     private Account account;
-
-    @Reference(lazy = true)
-    private List<Group> groups = new ArrayList<>();
 
     public String getUsername() {
         return username;
@@ -171,14 +165,6 @@ public class User {
 
     public void setAccount(Account account) {
         this.account = account;
-    }
-
-    public List<Group> getGroups() {
-        return groups;
-    }
-
-    public void setGroups(List<Group> groups) {
-        this.groups = groups;
     }
 
     @Override
