@@ -104,6 +104,7 @@ $(document).ready(function () {
 
     });
 
+    //Clearing inout values when modal form is hidden
     $('#addgroupform').on('hidden.bs.modal', function (e) {
         $('input').val('');
     });

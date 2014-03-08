@@ -28,7 +28,7 @@ public class Group implements Serializable {
     private long creationdate;
 
     private String accountKey;
-    //private String groupidString;
+    private String groupidString;
 
     public ObjectId getGroupid() {
         return groupid;
@@ -78,4 +78,19 @@ public class Group implements Serializable {
         this.creationdate = creationdate;
     }
 
+    public String getGroupidString() {
+        return groupid.toString();
+    }
+
+    @Override
+    public String toString() {
+        return "Group{" +
+                "groupid=" + groupid +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", recipients=" + recipients +
+                ", creationdate=" + creationdate +
+                ", accountKey='" + accountKey + '\'' +
+                '}';
+    }
 }

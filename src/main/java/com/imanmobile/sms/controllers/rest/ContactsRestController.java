@@ -23,6 +23,7 @@ import java.util.Map;
 @RestController
 @RequestMapping(value = "api/v1/contacts")
 public class ContactsRestController {
+
     @Autowired
     ContactsService contactsService;
 
@@ -52,7 +53,9 @@ public class ContactsRestController {
 //            errors.put("error", "The group name must be from 6 to 30 characters long ");
 //            return new ResponseEntity(errors, HttpStatus.BAD_REQUEST);
 //        }
-            System.out.println(group);
+//        System.out.println(group);
+//        Group newgroup = contactsService.createGroup(group.getName(), group.getDescription());
+//        return new ResponseEntity<>(newgroup, HttpStatus.OK);
 
         if (bindingResult.hasErrors()) {
             return new ResponseEntity<List<ObjectError>>(bindingResult.getAllErrors(), HttpStatus.BAD_REQUEST);
@@ -62,6 +65,5 @@ public class ContactsRestController {
         }
 
     }
-
 
 }
