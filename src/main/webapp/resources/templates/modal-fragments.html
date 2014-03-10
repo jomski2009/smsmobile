@@ -11,11 +11,11 @@
                     <h4 class="modal-title" id="import-dataLabel">Import contacts into ... </h4>
                 </div>
                 <div class="modal-body">
-                    <form id="addcontacts-form" action="/contacts/groups/addcontacts" method="post"
+                    <form id="addcontacts-form" action="/contacts/upload" method="post"
                           enctype="multipart/form-data">
                         <div class="form-group">
-                            <label for="csv-file">Csv File</label>
-                            <input id="csv-file" type="file" name="csv-file"/>
+                            <label for="csvfile">Csv File</label>
+                            <input id="csvfile" type="file" name="file"/>
                         </div>
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary">Submit</button>
@@ -69,7 +69,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                    <h4 class="modal-title" id="myModalLabel">Create Contact Group</h4>
                 </div>
                 <form id="addgroups" action="/contacts/groups/add" method="post">
                     <div class="modal-body">

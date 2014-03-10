@@ -5,16 +5,20 @@
 $(document).ready(function () {
     var baseUrl = "http://localhost:8080/api/v1/";
 
+    //Custom select picker
+    $('.selectpicker').selectpicker();
+
     //Functionality to clear bootstrap modals
 
     //Functionality to pop the modal window for contacts import.
     $('a.contacts-import').click(function () {
         var groupName = $(this).data('groupname');
         var groupId = $(this).data('groupid');
-        alert(groupName);
         $('.modal-header h4').html("Import contacts into " + groupName);
-        $('.modal-body #addcontacts-form').attr("action", "/contacts/groups/" + groupId + "/addcontacts");
+        //$('#addcontacts-form').attr("action", "/contacts/upload");
 
+        $('#addcontacts-form').attr("action", "/contacts/groups/" + groupId + "/addcontacts");
+        //$('.modal-body #addcontacts-form').attr("enctype", "multipart/form-data")
     });
 
     //Functionality to load the list of contacts on the contactslist modal window.
@@ -86,22 +90,24 @@ $(document).ready(function () {
         console.log(formData);
         console.log(fd);
 
-        $.ajax({type: 'POST', url: groupAddUrl, contentType: 'application/json', data: fd, dataType: 'json'}).done(function (data) {
+        $.ajax({type: 'POST', url: groupAddUrl, contentType: 'application/json', data: fd, dataType: 'json'}).done(function (data, status) {
             console.log(data);
             var groupRow = '<tr><td>' + data.name + '</td><td>' + data.recipients.length + '</td><td><div class="btn-group"><button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">Operations <span class="caret"></span></button><ul class="dropdown-menu" role="menu"><li><a class="contacts-import" data:groupid="' + data.groupidString + '" data:groupname="' + data.name + '" href="#import-data" data-toggle="modal" data-target="#import-data">Import data</a></li><li><a class="contacts-list" data:groupid="' + data.groupidString + '" href="#contactlist" data-toggle="modal" data-target="#contactlist">Members</a></li><li class="divider"></li><li><a href="#">Export Data</a></li></ul></div></td></tr>';
             $('#group-listing-table tbody').append(groupRow);
+            $('#addgroupform').modal('toggle');
+        }).fail(function (data, status, errorThrown) {
+            console.log(data);
+            alert("Status - " + data.status + ". " + status + ": " + errorThrown);
         });
 
-        $('#addgroupform').modal('toggle');
+    });
 
-
-
-//        $.post(baseUrl + "contacts/groups/add", parsedJson, function (data) {
-//            console.log(data);
-//            var groupRow = '<tr><td>'+data.name+'</td><td>'+data.recipients.length+'</td><td><div class="btn-group"><button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">Operations <span class="caret"></span></button><ul class="dropdown-menu" role="menu"><li><a class="contacts-import" data:groupid="'+data.groupidString +'" data:groupname="'+data.name+'" href="#import-data" data-toggle="modal" data-target="#import-data">Import data</a></li><li><a class="contacts-list" data:groupid="'+data.groupidString+'" href="#contactlist" data-toggle="modal" data-target="#contactlist">Members</a></li><li class="divider"></li><li><a href="#">Export Data</a></li></ul></div></td></tr>';
-//             $('#group-listing-table tbody').append(groupRow);
-//        });
-
+    //Functionality to add a selected placeholder to the sms message box.
+    $('#field-placeholder').change(function () {
+        var placeholder = $('#field-placeholder option:selected').val();
+        $('#messagetext').textrange('insert', "{"+placeholder+"}");
+        $('#field-placeholder').prop('selectedIndex', 0);
+        $('.selectpicker').selectpicker('refresh');
     });
 
     //Clearing inout values when modal form is hidden

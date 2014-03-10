@@ -11,15 +11,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.view.RedirectView;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,12 +55,12 @@ public class ContactsController {
         return "contacts";
     }
 
-    @RequestMapping(value = "/contacts/groups/{groupid}/addcontacts")
-    public RedirectView addContactsToGroup(Model model, @PathVariable("groupid") String groupid, @RequestParam("csv-file") MultipartFile csvfile) {
+    @RequestMapping(value = "/contacts/groups/{groupid}/addcontacts", method = RequestMethod.POST)
+    public String addContactsToGroup(@RequestParam("file") MultipartFile csvfile, @PathVariable("groupid") String groupid, Model model) {
 
         List<String> rows = new ArrayList<String>();
         try {
-            System.out.println("Starting csv processing...");
+            log.info("Starting csv processing...");
 
             if (!csvfile.isEmpty()) {
                 String row = "";
@@ -86,7 +81,28 @@ public class ContactsController {
         User user = userService.findByUsername(auth.getName());
         model.addAttribute("user", user);
 
-        return new RedirectView("/contacts");
+        return "redirect:/contacts";
+    }
+
+    @RequestMapping(value = "/contacts/upload", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    String handleFileUpload(
+            @RequestParam("file") MultipartFile file) {
+        if (!file.isEmpty()) {
+            try {
+                byte[] bytes = file.getBytes();
+                BufferedOutputStream stream =
+                        new BufferedOutputStream(new FileOutputStream(new File("test" + "-uploaded")));
+                stream.write(bytes);
+                stream.close();
+                return "You successfully uploaded " + "test" + " into " + "test" + "-uploaded !";
+            } catch (Exception e) {
+                return "You failed to upload " + "test" + " => " + e.getMessage();
+            }
+        } else {
+            return "You failed to upload " + "test" + " because the file was empty.";
+        }
     }
 
 }

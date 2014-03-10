@@ -5,7 +5,7 @@ buildscript {
         mavenLocal()
     }
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.0.0.RC4")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.0.0.RC3")
     }
 }
 
@@ -37,7 +37,8 @@ dependencies {
     compile 'commons-codec:commons-codec:1.4'
     compile 'com.google.code.gson:gson:2.2.4'
     compile("org.hibernate:hibernate-validator")
-    compile("org.apache.tomcat.embed:tomcat-embed-el")
+    compile 'org.apache.tomcat.embed:tomcat-embed-el:8.0.3'
+    compile 'org.apache.commons:commons-lang3:3.0'
 
 //    compile ('oneapi:oneapi-java:0.1.2-SNAPSHOT'){
 //        exclude group: 'org.slf4j'

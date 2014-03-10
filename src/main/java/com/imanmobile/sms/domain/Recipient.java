@@ -2,12 +2,17 @@ package com.imanmobile.sms.domain;
 
 import org.mongodb.morphia.annotations.Embedded;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
 /**
  * Created by jome on 2014/02/28.
  */
 
 @Embedded
 public class Recipient {
+    @NotNull
+    @Pattern(regexp = "^(27\\d{9})$", message = "The cellnumber must be in the format, '27123456789'")
     private String cellnumber;
     private String firstname;
     private String lastname;

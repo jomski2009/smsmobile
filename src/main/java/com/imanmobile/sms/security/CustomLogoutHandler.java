@@ -29,6 +29,9 @@ public class CustomLogoutHandler extends SecurityContextLogoutHandler {
     @Override
     public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
         SMSClient client = new SMSClient(configuration);
+        client.getCustomerProfileClient().logout();
+        configuration.setAuthentication(null);
+
         Assert.notNull(request, "HttpServletRequest required");
         if (invalidateHttpSession) {
             HttpSession session = request.getSession(false);
@@ -44,7 +47,6 @@ public class CustomLogoutHandler extends SecurityContextLogoutHandler {
             context.setAuthentication(null);
         }
 
-        client.getCustomerProfileClient().logout();
         SecurityContextHolder.clearContext();
     }
 

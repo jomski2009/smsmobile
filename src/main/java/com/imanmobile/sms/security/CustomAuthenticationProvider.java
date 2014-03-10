@@ -3,7 +3,6 @@ package com.imanmobile.sms.security;
 import com.imanmobile.sms.domain.Account;
 import com.imanmobile.sms.oneapi.client.impl.SMSClient;
 import com.imanmobile.sms.oneapi.config.Configuration;
-import com.imanmobile.sms.oneapi.exception.RequestException;
 import com.imanmobile.sms.oneapi.model.Authentication;
 import com.imanmobile.sms.oneapi.model.common.AccountBalance;
 import com.imanmobile.sms.oneapi.model.common.CustomerProfile;
@@ -64,18 +63,19 @@ public class CustomAuthenticationProvider extends AbstractUserDetailsAuthenticat
     @Override
     protected UserDetails retrieveUser(String username, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
 
-        System.out.println("Authenticating: " + username);
+        logger.info("Authenticating: {}", username);
         String password = (String) authentication.getCredentials();
-        logger.info("User password {}", password);
+        logger.info("User password: {}", password);
 
         if (!StringUtils.hasText(password)) {
             logger.warn("Username {}: no password provided", username);
             throw new BadCredentialsException("Please enter password");
         }
         //Check with infobip for valid login credentials...
-        LoginResponse loginResponse;
 
         try {
+            LoginResponse loginResponse;
+
             Authentication auth = new Authentication(username, password);
             configuration.setAuthentication(auth);
             //Configuration configuration = new Configuration(username, password);
@@ -87,9 +87,13 @@ public class CustomAuthenticationProvider extends AbstractUserDetailsAuthenticat
             logger.info("Login Response: {}", loginResponse);
 
             if (!loginResponse.isVerified()) {
-                logger.warn("User details not verified by Infobip");
+                logger.error("User details not verified by Infobip");
                 throw new BadCredentialsException("Invalid login");
             } else {
+                logger.info("The user has been successfully verified");
+                logger.info("Configuration password: {}", client.getConfiguration().getAuthentication().getPassword());
+                logger.info("Configuration password: {}", client.getConfiguration().getAuthentication().getUsername());
+
                 com.imanmobile.sms.domain.User person = userService.findByUsername(username);
                 CustomerProfile customerProfile = client.getCustomerProfileClient().getCustomerProfile();
                 Account account = client.getCustomerProfileClient().getCustomerAccount();
@@ -108,9 +112,10 @@ public class CustomAuthenticationProvider extends AbstractUserDetailsAuthenticat
 
                     //Check if the account already exists (We may just be creating additional users.
                     Account acct1 = accountsService.getAccountForKey(account.getKey());
-                    logger.info("Current balance for {} is {}", username, balance.getBalance());
-                    acct1.setAccountBalance(balance);
+
                     if (acct1 != null) {
+                        logger.info("Current balance for {} is {}", username, balance.getBalance());
+                        acct1.setAccountBalance(balance);
                         accountsService.save(acct1);
                         person.setAccount(acct1);
                         userService.save(person);
@@ -170,10 +175,10 @@ public class CustomAuthenticationProvider extends AbstractUserDetailsAuthenticat
 
             }
 
-        } catch (RequestException re) {
+        } catch (Exception re) {
 
-            logger.info("Caught error is : {}", re.getMessage());
-            logger.warn("User details not verified by Infobip");
+            logger.error("Caught error is : {}", re.getMessage());
+            logger.error("User details not verified by Infobip");
             re.printStackTrace();
             throw new BadCredentialsException("Invalid login");
 

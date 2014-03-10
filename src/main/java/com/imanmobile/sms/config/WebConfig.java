@@ -1,7 +1,7 @@
 package com.imanmobile.sms.config;
 
 import com.github.mxab.thymeleaf.extras.dataattribute.dialect.DataAttributeDialect;
-import com.imanmobile.sms.oneapi.client.impl.SMSClient;
+import org.springframework.boot.context.embedded.MultiPartConfigFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.ViewResolver;
@@ -57,7 +57,10 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Bean
     MultipartConfigElement multipartConfigElement() {
-        return new MultipartConfigElement("");
+        MultiPartConfigFactory factory = new MultiPartConfigFactory();
+        factory.setMaxFileSize("1024KB");
+        factory.setMaxRequestSize("1024KB");
+        return factory.createMultipartConfig();
     }
 
     @Bean

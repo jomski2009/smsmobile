@@ -10,10 +10,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.math.BigDecimal;
 
 /**
  * Created by jome on 2014/02/28.
@@ -41,11 +39,6 @@ public class HomeController {
     public String doLogout(Model model,  HttpServletRequest request) {
         logger.info("Logging out current user");
 
-        try {
-            request.logout();
-        } catch (ServletException e) {
-            e.printStackTrace();
-        }
         return "home";
     }
 

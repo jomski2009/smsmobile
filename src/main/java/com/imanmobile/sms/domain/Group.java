@@ -2,10 +2,10 @@ package com.imanmobile.sms.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.bson.types.ObjectId;
-import org.hibernate.validator.constraints.Length;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,10 +19,8 @@ public class Group implements Serializable {
     @Id
     private ObjectId groupid;
 
-    @Length(min = 6, max = 30,message = "Group name must be between 6 and 30 characters")
+    @NotNull
     private String name;
-
-    @Length(min=12)
     private String description;
     private List<Recipient> recipients = new ArrayList<>();
     private long creationdate;

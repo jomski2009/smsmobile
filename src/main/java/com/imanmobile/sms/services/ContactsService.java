@@ -14,6 +14,7 @@ public interface ContactsService {
     String createGroup(String name, String description, String username);
     Group createGroup(String name, String description);
     void addContactsToGroup(String groupid, List<String> contactsValues);
+    void addContactsToGroup(String groupid, Recipient recipient);
     List<Recipient> getGroupRecipients(String groupid);
     List<Group> getGroupsForAccount(String accountKey);
 
