@@ -1,9 +1,6 @@
 package com.imanmobile.sms.controllers.web;
 
-import com.imanmobile.sms.domain.Group;
-import com.imanmobile.sms.domain.GroupResource;
-import com.imanmobile.sms.domain.Recipient;
-import com.imanmobile.sms.domain.User;
+import com.imanmobile.sms.domain.*;
 import com.imanmobile.sms.oneapi.config.Configuration;
 import com.imanmobile.sms.oneapi.model.SendMessageResult;
 import com.imanmobile.sms.services.ContactsService;
@@ -67,6 +64,24 @@ public class SmsController {
 
     @RequestMapping(value = "bulksms", method = RequestMethod.GET)
     public String bulkSMSForm(Model model) {
+        BulkMessageDTO dto = new BulkMessageDTO();
+        model.addAttribute("messageobject", dto);
+        model.addAttribute("fieldlist", getFieldList());
+        addGroupListToModel(model);
+        addCurrentUserToModel(model);
+        return "bulksms";
+    }
+
+    @RequestMapping(value = "bulksms", method = RequestMethod.POST)
+    public String processbulkSMS(Model model,@RequestParam("bulkmessagetext") String messageText, @RequestParam("groupid") String groupid, @RequestParam("messagedescription") String messagedescription ) {
+
+        BulkMessageDTO dto = new BulkMessageDTO();
+        dto.setBulkmessagetext(messageText);
+        dto.setGroupid(groupid);
+        dto.setMessagedescription(messagedescription);
+        log.info(dto.toString());
+        smsService.sendBulkSms(dto);
+
         model.addAttribute("fieldlist", getFieldList());
         addGroupListToModel(model);
         addCurrentUserToModel(model);
@@ -89,10 +104,11 @@ public class SmsController {
         List<Group> groupsForAccount = contactsService.getGroupsForAccount(currentUser.getAccountKey());
         List<GroupResource> groupResources = new ArrayList<>();
 
-        for (Group group :groupsForAccount){
+        for (Group group : groupsForAccount) {
             GroupResource resource = new GroupResource();
             resource.setName(group.getName());
             resource.setGroupid(group.getGroupidString());
+            resource.setDescription(group.getDescription());
             groupResources.add(resource);
         }
 

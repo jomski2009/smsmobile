@@ -1,13 +1,15 @@
 package com.imanmobile.sms.oneapi.model;
 
-import java.util.Arrays;
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.imanmobile.sms.oneapi.model.common.ResourceReference;
 import org.mongodb.morphia.annotations.Entity;
 
-@Entity("smsresults")
-public class SendMessageResult {
+import java.util.Arrays;
 
+@Entity("smsresults")
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class SendMessageResult {
+     private String accountKey;
 	private String clientCorrelator;
 	private SendMessageResultItem[] sendMessageResults;
 	private ResourceReference resourceReference;
@@ -40,7 +42,15 @@ public class SendMessageResult {
 		this.resourceReference = resourceReference;
 	}
 
-	@Override
+    public String getAccountKey() {
+        return accountKey;
+    }
+
+    public void setAccountKey(String accountKey) {
+        this.accountKey = accountKey;
+    }
+
+    @Override
 	public String toString() {
 		return "SendMessageResult {clientCorrelator=" + clientCorrelator
 				+ ", sendMessageResults=" + Arrays.toString(sendMessageResults)

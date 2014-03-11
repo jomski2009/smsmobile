@@ -5,6 +5,7 @@ package com.imanmobile.sms.domain;
  */
 public class GroupResource {
     private String name;
+    private String description;
     private String groupid;
 
     public String getName() {
@@ -21,5 +22,13 @@ public class GroupResource {
 
     public void setGroupid(String groupid) {
         this.groupid = groupid;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

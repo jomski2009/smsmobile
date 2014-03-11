@@ -79,6 +79,7 @@ $(document).ready(function () {
 
     });
 
+
     //Functionality to handle the processing of group creation
     $('#addgroups').submit(function (evt) {
         evt.preventDefault();
@@ -102,12 +103,43 @@ $(document).ready(function () {
 
     });
 
-    //Functionality to add a selected placeholder to the sms message box.
+
+    //Functionality to process and send bulk sms
+    $('#bulkmessagingform').submit(function (event) {
+        event.preventDefault();
+        //Let the games begin... :)
+        var bulksmsUrl = baseUrl + "sms/bulksms";
+        var formData = $(this).serializeObject();
+        var fd = JSON.stringify(formData);
+        console.log(fd);
+        $.ajax({type: 'POST', url: bulksmsUrl, contentType: 'application/json', data: fd, dataType: 'json'}).done(function (data, status) {
+            console.log(data);
+        }).fail(function (data, status, errorThrown) {
+            console.log(data);
+        });
+
+    });
+
+    //Functionality to add a selected placeholder to the bulk sms message box.
     $('#field-placeholder').change(function () {
         var placeholder = $('#field-placeholder option:selected').val();
-        $('#messagetext').textrange('insert', "{"+placeholder+"}");
+        $('#bulkmessagetext').textrange('insert', "[" + placeholder + "]");
         $('#field-placeholder').prop('selectedIndex', 0);
-        $('.selectpicker').selectpicker('refresh');
+        $('#field-placeholder').selectpicker('refresh');
+    });
+
+    //Functionality to display name of chosen Bulk sms group
+    $('#grouppicker.selectpicker').change(function () {
+        var groupName = $('#grouppicker option:selected').text();
+        var desc = $('#grouppicker option:selected').data('groupdescription');
+        $('#chosengroup').html("<p>Recipient Group: " + groupName + " ( " + desc + " )</p>");
+        var date = new Date();
+        $('#messagedescription').val(groupName + "-" + date.toTimeString());
+    });
+
+    $('#bulkmessagetext').keyup(function () {
+        var content = $(this).val();
+        $('#messagepreviewtext').val(content);
     });
 
     //Clearing inout values when modal form is hidden

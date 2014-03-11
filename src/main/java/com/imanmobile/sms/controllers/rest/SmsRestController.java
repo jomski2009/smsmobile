@@ -1,14 +1,17 @@
 package com.imanmobile.sms.controllers.rest;
 
+import com.imanmobile.sms.domain.BulkMessageDTO;
 import com.imanmobile.sms.oneapi.model.SendMessageResult;
 import com.imanmobile.sms.services.SmsService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,6 +22,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("api/v1/sms")
 public class SmsRestController {
+    Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     SmsService smsService;
 
@@ -40,5 +44,12 @@ public class SmsRestController {
 
     }
 
+    @RequestMapping(value = "bulksms", method = RequestMethod.POST)
+    public HttpEntity processbulkSMS(Model model,@RequestBody BulkMessageDTO messageDTO ) {
 
+        logger.info(messageDTO.toString());
+        smsService.sendBulkSms(messageDTO);
+
+        return new ResponseEntity<BulkMessageDTO>(messageDTO, HttpStatus.CREATED);
+    }
 }

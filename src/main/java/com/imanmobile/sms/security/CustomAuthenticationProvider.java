@@ -63,9 +63,8 @@ public class CustomAuthenticationProvider extends AbstractUserDetailsAuthenticat
     @Override
     protected UserDetails retrieveUser(String username, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
 
-        logger.info("Authenticating: {}", username);
         String password = (String) authentication.getCredentials();
-        logger.info("User password: {}", password);
+
 
         if (!StringUtils.hasText(password)) {
             logger.warn("Username {}: no password provided", username);
@@ -82,24 +81,18 @@ public class CustomAuthenticationProvider extends AbstractUserDetailsAuthenticat
             SMSClient client = new SMSClient(configuration);
             loginResponse = client.getCustomerProfileClient().login();
 
-//            loginResponse = profileClient.login(username, password);
-            //loginResponse = smsService.login(username, password);
-            logger.info("Login Response: {}", loginResponse);
 
             if (!loginResponse.isVerified()) {
                 logger.error("User details not verified by Infobip");
                 throw new BadCredentialsException("Invalid login");
             } else {
                 logger.info("The user has been successfully verified");
-                logger.info("Configuration password: {}", client.getConfiguration().getAuthentication().getPassword());
-                logger.info("Configuration password: {}", client.getConfiguration().getAuthentication().getUsername());
 
                 com.imanmobile.sms.domain.User person = userService.findByUsername(username);
+                logger.info(person.toString());
                 CustomerProfile customerProfile = client.getCustomerProfileClient().getCustomerProfile();
                 Account account = client.getCustomerProfileClient().getCustomerAccount();
                 AccountBalance balance = client.getCustomerProfileClient().getAccountBalance();
-                logger.info("Customer account: {}", account);
-                logger.info("Customer account balance: {}", balance);
 
                 account.setAccountBalance(balance);
 
@@ -114,7 +107,6 @@ public class CustomAuthenticationProvider extends AbstractUserDetailsAuthenticat
                     Account acct1 = accountsService.getAccountForKey(account.getKey());
 
                     if (acct1 != null) {
-                        logger.info("Current balance for {} is {}", username, balance.getBalance());
                         acct1.setAccountBalance(balance);
                         accountsService.save(acct1);
                         person.setAccount(acct1);
@@ -128,15 +120,10 @@ public class CustomAuthenticationProvider extends AbstractUserDetailsAuthenticat
                     //Just update the account balance
                     Account acct1 = accountsService.getAccountForKey(account.getKey());
                     acct1.setAccountBalance(balance);
-                    logger.info("Current balance for {} is {}", username, balance.getBalance());
                     accountsService.save(acct1);
                 }
 
                 //Find the user
-
-
-                //Pull data from infobip.
-                logger.info("Current customer profile: {}", customerProfile);
 
 
 //                if (!passwordEncoder.matches(password, person.getPassword())) {
