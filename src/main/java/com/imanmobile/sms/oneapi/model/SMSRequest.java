@@ -1,5 +1,8 @@
 package com.imanmobile.sms.oneapi.model;
 
+import org.mongodb.morphia.annotations.Entity;
+
+@Entity("messages")
 public class SMSRequest {
 	private String senderAddress = null;
 	private String[] address = null;

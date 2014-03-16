@@ -5,6 +5,7 @@ import com.imanmobile.sms.oneapi.client.impl.SMSClient;
 import com.imanmobile.sms.oneapi.config.Configuration;
 import com.imanmobile.sms.oneapi.model.Authentication;
 import com.imanmobile.sms.oneapi.model.common.AccountBalance;
+import com.imanmobile.sms.oneapi.model.common.CustomerPricing;
 import com.imanmobile.sms.oneapi.model.common.CustomerProfile;
 import com.imanmobile.sms.oneapi.model.common.LoginResponse;
 import com.imanmobile.sms.services.AccountsService;
@@ -89,12 +90,12 @@ public class CustomAuthenticationProvider extends AbstractUserDetailsAuthenticat
                 logger.info("The user has been successfully verified");
 
                 com.imanmobile.sms.domain.User person = userService.findByUsername(username);
-                logger.info(person.toString());
                 CustomerProfile customerProfile = client.getCustomerProfileClient().getCustomerProfile();
                 Account account = client.getCustomerProfileClient().getCustomerAccount();
                 AccountBalance balance = client.getCustomerProfileClient().getAccountBalance();
-
+                CustomerPricing pricing = client.getCustomerProfileClient().getCustomerPricing("ZA"); //Change later...
                 account.setAccountBalance(balance);
+                account.setCustomerPricing(pricing);
 
                 if (person == null) {
                     //Must be a new user... create the account here.
@@ -108,6 +109,7 @@ public class CustomAuthenticationProvider extends AbstractUserDetailsAuthenticat
 
                     if (acct1 != null) {
                         acct1.setAccountBalance(balance);
+                        acct1.setCustomerPricing(pricing);
                         accountsService.save(acct1);
                         person.setAccount(acct1);
                         userService.save(person);
@@ -117,9 +119,10 @@ public class CustomAuthenticationProvider extends AbstractUserDetailsAuthenticat
                         userService.save(person);
                     }
                 } else {
-                    //Just update the account balance
+                    //Just update the account balance and pricing
                     Account acct1 = accountsService.getAccountForKey(account.getKey());
                     acct1.setAccountBalance(balance);
+
                     accountsService.save(acct1);
                 }
 

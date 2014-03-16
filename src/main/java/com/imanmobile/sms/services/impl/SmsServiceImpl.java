@@ -1,15 +1,15 @@
 package com.imanmobile.sms.services.impl;
 
-import com.imanmobile.sms.domain.Account;
-import com.imanmobile.sms.domain.BulkMessageDTO;
-import com.imanmobile.sms.domain.Group;
-import com.imanmobile.sms.domain.Recipient;
+import com.imanmobile.sms.domain.*;
 import com.imanmobile.sms.oneapi.client.impl.SMSClient;
 import com.imanmobile.sms.oneapi.config.Configuration;
 import com.imanmobile.sms.oneapi.model.SMSRequest;
 import com.imanmobile.sms.oneapi.model.SendMessageResult;
+import com.imanmobile.sms.oneapi.model.SendMessageResultItem;
 import com.imanmobile.sms.oneapi.model.common.DeliveryInfoList;
+import com.imanmobile.sms.services.AccountsService;
 import com.imanmobile.sms.services.SmsService;
+import com.imanmobile.sms.services.UserService;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.query.UpdateOperations;
@@ -17,8 +17,10 @@ import org.mongodb.morphia.query.UpdateResults;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -33,6 +35,12 @@ import java.util.regex.Pattern;
 public class SmsServiceImpl implements SmsService {
     @Autowired
     Datastore ds;
+
+    @Autowired
+    UserService userService;
+
+    @Autowired
+    AccountsService accountsService;
 
     @Autowired
     Configuration configuration;
@@ -82,17 +90,28 @@ public class SmsServiceImpl implements SmsService {
 
         SMSClient client = new SMSClient(configuration);
         String senderId = client.getCustomerProfileClient().getCustomerAccount().getDefaultSender();
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userService.findByUsername(username);
+        String accountKey = user.getAccountKey();
 
         SMSRequest smsRequest = new SMSRequest(senderId, message, reclist);
         //SMSRequest request = new SMSRequest("senderAddress","message to be sent","clientcorrelator","notifyurl","sendername","callbackdata", reclist);
-        SMSRequest request = new SMSRequest(senderId, message, null, null, senderId, null, reclist);
-        SendMessageResult messageResult = client.getSMSMessagingClient().sendSMS(smsRequest);
+        String messageId = "messageid_" + new Date().getTime();
+        SMSRequest request = new SMSRequest(senderId, message, messageId, null, senderId, null, reclist);
+        SendMessageResult messageResult = client.getSMSMessagingClient().sendSMS(request);
 
 
         //We should update the balance here, right?
-        String accountKey = client.getCustomerProfileClient().getCustomerAccount().getKey();
         messageResult.setAccountKey(accountKey);
+        Account account = accountsService.getAccountForKey(accountKey);
+
+        for(SendMessageResultItem item: messageResult.getSendMessageResults()){
+            item.setPrice(account.getCustomerPricing().getPrices().get(0).getPrice());
+        }
+
         ds.save(messageResult);
+        ds.save(request);
+
         double balance = client.getCustomerProfileClient().getAccountBalance().getBalance();
         logger.info("New balance: {}", balance);
 
@@ -117,7 +136,7 @@ public class SmsServiceImpl implements SmsService {
         for (Recipient recipient : group.getRecipients()) {
             String processedMessage = replaceTokens(text, recipient);
             logger.info("Processed message is : {}", processedMessage);
-            SMSRequest request = new SMSRequest(senderId,processedMessage, recipient.getCellnumber());
+            SMSRequest request = new SMSRequest(senderId, processedMessage, recipient.getCellnumber());
             SendMessageResult messageResult = client.getSMSMessagingClient().sendSMS(request);
 
             //We should update the balance here, right?

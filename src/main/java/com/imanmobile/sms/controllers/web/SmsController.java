@@ -88,7 +88,14 @@ public class SmsController {
         return "bulksms";
     }
 
-    /**
+    @RequestMapping(value="getreports", method = RequestMethod.GET)
+    public String getDeliveryReports(Model model){
+        addCurrentUserToModel(model);
+
+        return "delivery-reports";
+    }
+
+    /*************************************************************************************************
      * Private methods
      */
 

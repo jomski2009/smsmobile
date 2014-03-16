@@ -1,7 +1,7 @@
 package com.imanmobile.sms.domain;
 
 import com.imanmobile.sms.oneapi.model.common.AccountBalance;
-import org.mongodb.morphia.annotations.Embedded;
+import com.imanmobile.sms.oneapi.model.common.CustomerPricing;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 
@@ -33,6 +33,8 @@ public class Account {
     private String defaultSender;
 
     private AccountBalance accountBalance;
+
+    private CustomerPricing customerPricing;
 
     public int getId() {
         return id;
@@ -164,6 +166,14 @@ public class Account {
 
     public void setAccountBalance(AccountBalance accountBalance) {
         this.accountBalance = accountBalance;
+    }
+
+    public CustomerPricing getCustomerPricing() {
+        return customerPricing;
+    }
+
+    public void setCustomerPricing(CustomerPricing customerPricing) {
+        this.customerPricing = customerPricing;
     }
 
     @Override

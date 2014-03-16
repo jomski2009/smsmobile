@@ -1,0 +1,71 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="smsmobile (exploded)">
+    <output-path>$PROJECT_DIR$/out/artifacts/smsmobile__exploded_</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="smsmobile/web/Web Gradle" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="smsmobile" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="Gradle: spring-boot-starter-web-1.0.0.RC3" />
+          <element id="library" level="project" name="Gradle: spring-boot-starter-security-1.0.0.RC3" />
+          <element id="library" level="project" name="Gradle: spring-boot-starter-actuator-1.0.0.RC3" />
+          <element id="library" level="project" name="Gradle: morphia-0.105" />
+          <element id="library" level="project" name="Gradle: mongo-java-driver-2.11.3" />
+          <element id="library" level="project" name="Gradle: cglib-nodep-3.1" />
+          <element id="library" level="project" name="Gradle: proxytoys-1.0" />
+          <element id="library" level="project" name="Gradle: spring-boot-starter-thymeleaf-1.0.0.RC3" />
+          <element id="library" level="project" name="Gradle: thymeleaf-extras-data-attribute-1.3" />
+          <element id="library" level="project" name="Gradle: async-http-client-1.7.1" />
+          <element id="library" level="project" name="Gradle: commons-codec-1.4" />
+          <element id="library" level="project" name="Gradle: gson-2.2.4" />
+          <element id="library" level="project" name="Gradle: hibernate-validator-5.0.2.Final" />
+          <element id="library" level="project" name="Gradle: tomcat-embed-el-8.0.3" />
+          <element id="library" level="project" name="Gradle: commons-lang3-3.0" />
+          <element id="library" level="project" name="Gradle: commons-logging-1.1.1" />
+          <element id="library" level="project" name="Gradle: spring-core-4.0.1.RELEASE" />
+          <element id="library" level="project" name="Gradle: spring-beans-4.0.1.RELEASE" />
+          <element id="library" level="project" name="Gradle: aopalliance-1.0" />
+          <element id="library" level="project" name="Gradle: spring-aop-4.0.1.RELEASE" />
+          <element id="library" level="project" name="Gradle: spring-expression-4.0.1.RELEASE" />
+          <element id="library" level="project" name="Gradle: spring-context-4.0.1.RELEASE" />
+          <element id="library" level="project" name="Gradle: spring-boot-1.0.0.RC3" />
+          <element id="library" level="project" name="Gradle: spring-boot-autoconfigure-1.0.0.RC3" />
+          <element id="library" level="project" name="Gradle: slf4j-api-1.7.5" />
+          <element id="library" level="project" name="Gradle: jcl-over-slf4j-1.7.5" />
+          <element id="library" level="project" name="Gradle: jul-to-slf4j-1.7.5" />
+          <element id="library" level="project" name="Gradle: log4j-over-slf4j-1.7.5" />
+          <element id="library" level="project" name="Gradle: logback-core-1.1.0" />
+          <element id="library" level="project" name="Gradle: logback-classic-1.1.0" />
+          <element id="library" level="project" name="Gradle: spring-boot-starter-logging-1.0.0.RC3" />
+          <element id="library" level="project" name="Gradle: spring-boot-starter-1.0.0.RC3" />
+          <element id="library" level="project" name="Gradle: tomcat-embed-core-7.0.47" />
+          <element id="library" level="project" name="Gradle: tomcat-embed-logging-juli-7.0.47" />
+          <element id="library" level="project" name="Gradle: spring-boot-starter-tomcat-1.0.0.RC3" />
+          <element id="library" level="project" name="Gradle: jackson-annotations-2.3.0" />
+          <element id="library" level="project" name="Gradle: jackson-core-2.3.1" />
+          <element id="library" level="project" name="Gradle: jackson-databind-2.3.1" />
+          <element id="library" level="project" name="Gradle: spring-web-4.0.1.RELEASE" />
+          <element id="library" level="project" name="Gradle: spring-webmvc-4.0.1.RELEASE" />
+          <element id="library" level="project" name="Gradle: spring-security-core-3.2.0.RELEASE" />
+          <element id="library" level="project" name="Gradle: spring-security-config-3.2.0.RELEASE" />
+          <element id="library" level="project" name="Gradle: spring-security-web-3.2.0.RELEASE" />
+          <element id="library" level="project" name="Gradle: spring-boot-actuator-1.0.0.RC3" />
+          <element id="library" level="project" name="Gradle: ognl-3.0.6" />
+          <element id="library" level="project" name="Gradle: javassist-3.16.1-GA" />
+          <element id="library" level="project" name="Gradle: thymeleaf-2.1.2.RELEASE" />
+          <element id="library" level="project" name="Gradle: thymeleaf-spring4-2.1.2.RELEASE" />
+          <element id="library" level="project" name="Gradle: thymeleaf-layout-dialect-1.2.1" />
+          <element id="library" level="project" name="Gradle: netty-3.3.1.Final" />
+          <element id="library" level="project" name="Gradle: validation-api-1.1.0.Final" />
+          <element id="library" level="project" name="Gradle: jboss-logging-3.1.1.GA" />
+          <element id="library" level="project" name="Gradle: classmate-1.0.0" />
+        </element>
+      </element>
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/out/artifacts/smsmobile__exploded_/META-INF/MANIFEST.MF" />
+      </element>
+    </root>
+  </artifact>
+</component>

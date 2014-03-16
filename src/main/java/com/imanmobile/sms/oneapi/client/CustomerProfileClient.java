@@ -2,6 +2,7 @@ package com.imanmobile.sms.oneapi.client;
 
 import com.imanmobile.sms.domain.Account;
 import com.imanmobile.sms.oneapi.model.common.AccountBalance;
+import com.imanmobile.sms.oneapi.model.common.CustomerPricing;
 import com.imanmobile.sms.oneapi.model.common.CustomerProfile;
 import com.imanmobile.sms.oneapi.model.common.LoginResponse;
 
@@ -49,4 +50,6 @@ public interface CustomerProfileClient {
      * @return  Account
      */
     Account getCustomerAccount();
+
+    CustomerPricing getCustomerPricing(String countryCode);
 }

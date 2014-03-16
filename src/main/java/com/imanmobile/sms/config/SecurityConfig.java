@@ -60,6 +60,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .antMatchers("/contacts").hasAuthority("USER")
                 .antMatchers("/quicksms").hasAnyAuthority("USER")
                 .antMatchers("/bulksms").hasAnyAuthority("USER")
+                .antMatchers("/getreports").hasAuthority("USER")
                 .antMatchers("/account-settings").hasAnyAuthority("USER")
                 .antMatchers("/resources/**").permitAll()
                 .anyRequest().permitAll();

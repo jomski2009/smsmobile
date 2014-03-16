@@ -9,6 +9,7 @@ import com.imanmobile.sms.oneapi.model.LoginRequest;
 import com.imanmobile.sms.oneapi.model.RequestData;
 import com.imanmobile.sms.oneapi.model.RequestData.Method;
 import com.imanmobile.sms.oneapi.model.common.AccountBalance;
+import com.imanmobile.sms.oneapi.model.common.CustomerPricing;
 import com.imanmobile.sms.oneapi.model.common.CustomerProfile;
 import com.imanmobile.sms.oneapi.model.common.LoginResponse;
 import org.slf4j.Logger;
@@ -19,6 +20,7 @@ import java.util.List;
 
 public class CustomerProfileClientImpl extends OneAPIBaseClientImpl implements CustomerProfileClient {
     private static final String CUSTOMER_PROFILE_URL_BASE = "/customerProfile";
+    private static final String CUSTOMER_PRICING_BASE = "/pricing/request-type/SMS-MT/country/";
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private List<LoginListener> loginListenersList = null;
@@ -79,6 +81,13 @@ public class CustomerProfileClientImpl extends OneAPIBaseClientImpl implements C
     public Account getCustomerAccount() {
         RequestData requestData = new RequestData(CUSTOMER_PROFILE_URL_BASE + "/account", Method.GET);
         return executeMethod(requestData, Account.class);
+    }
+
+    @Override
+    public CustomerPricing getCustomerPricing(String countryCode) {
+        RequestData requestData = new RequestData(CUSTOMER_PRICING_BASE + countryCode + "/network", Method.GET);
+
+        return executeMethod(requestData, CustomerPricing.class);
     }
 
     //*************************CustomerProfileClientImpl private******************************************************************************************************************************************************

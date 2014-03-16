@@ -48,8 +48,8 @@
                                 Operations <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu" role="menu">
-                                <li><a class="contacts-import" data:groupid="${group.groupid}" data:groupname="${group.name}" href="#import-data" data-toggle="modal" data-target="#import-data">Import data</a></li>
-                                <li><a class="contacts-list" data:groupid="${group.groupid}" href="#contactlist" data-toggle="modal" data-target="#contactlist">Members</a></li>
+                                <li><a class="contacts-import" data-th-attr="data-groupid=${group.groupid}, data-groupname=${group.name}" href="#import-data" data-toggle="modal" data-target="#import-data">Import data</a></li>
+                                <li><a class="contacts-list" data-th-attr="data-groupid=${group.groupid}"  href="#contactlist" data-toggle="modal" data-target="#contactlist">Members</a></li>
                                 <li class="divider"></li>
                                 <li><a href="#">Export Data</a></li>
                             </ul>
