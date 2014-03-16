@@ -7,6 +7,7 @@ import com.imanmobile.sms.oneapi.model.SMSRequest;
 import com.imanmobile.sms.oneapi.model.SendMessageResult;
 import com.imanmobile.sms.oneapi.model.SendMessageResultItem;
 import com.imanmobile.sms.oneapi.model.common.DeliveryInfoList;
+import com.imanmobile.sms.oneapi.model.common.ResourceReference;
 import com.imanmobile.sms.services.AccountsService;
 import com.imanmobile.sms.services.SmsService;
 import com.imanmobile.sms.services.UserService;
@@ -99,13 +100,14 @@ public class SmsServiceImpl implements SmsService {
         String messageId = "messageid_" + new Date().getTime();
         SMSRequest request = new SMSRequest(senderId, message, messageId, null, senderId, null, reclist);
         SendMessageResult messageResult = client.getSMSMessagingClient().sendSMS(request);
+        logger.info(request.toString());
 
 
         //We should update the balance here, right?
         messageResult.setAccountKey(accountKey);
         Account account = accountsService.getAccountForKey(accountKey);
 
-        for(SendMessageResultItem item: messageResult.getSendMessageResults()){
+        for (SendMessageResultItem item : messageResult.getSendMessageResults()) {
             item.setPrice(account.getCustomerPricing().getPrices().get(0).getPrice());
         }
 
@@ -123,7 +125,7 @@ public class SmsServiceImpl implements SmsService {
     }
 
     @Override
-    public void sendBulkSms(BulkMessageDTO bulkMessage) {
+    public SendMessageResult sendBulkSms(BulkMessageDTO bulkMessage) {
         logger.info("processing bulk messaging");
         SMSClient client = new SMSClient(configuration);
         String groupId = bulkMessage.getGroupid();
@@ -131,24 +133,49 @@ public class SmsServiceImpl implements SmsService {
         Group group = ds.createQuery(Group.class).field("groupid").equal(new ObjectId(groupId)).get();
         String senderId = client.getCustomerProfileClient().getCustomerAccount().getDefaultSender();
         String accountKey = client.getCustomerProfileClient().getCustomerAccount().getKey();
+        Account account = accountsService.getAccountForKey(accountKey);
+
+        String messageId = "messageid_" + new Date().getTime();
+        String encodedSenderid = senderId.replaceAll(" ", "+");
+        String resourceUrl = "http://oneapi.infobip.com/1/smsmessaging/outbound/" + encodedSenderid + "/requests/" + messageId + "/deliveryInfos";
+        ResourceReference ref = new ResourceReference();
+        ref.setResourceURL(resourceUrl);
+        SendMessageResult fsmr = new SendMessageResult();
+        fsmr.setAccountKey(accountKey);
+        fsmr.setClientCorrelator(messageId);
+        fsmr.setResourceReference(ref);
 
 
         for (Recipient recipient : group.getRecipients()) {
             String processedMessage = replaceTokens(text, recipient);
             logger.info("Processed message is : {}", processedMessage);
-            SMSRequest request = new SMSRequest(senderId, processedMessage, recipient.getCellnumber());
-            SendMessageResult messageResult = client.getSMSMessagingClient().sendSMS(request);
+            String[] recList = new String[1];
+            recList[0] = recipient.getCellnumber();
 
-            //We should update the balance here, right?
-            messageResult.setAccountKey(accountKey);
-            ds.save(messageResult);
+            SMSRequest request = new SMSRequest(senderId, processedMessage, messageId, null, senderId, null, recList);
+            //Looks like we can use the infobip api to send this?
+            //SMSRequest request = new SMSRequest(senderId, processedMessage, recipient.getCellnumber());
+            ds.save(request);
+            SendMessageResult messageResult = client.getSMSMessagingClient().sendSMS(request);
+//            messageResult.getSendMessageResults().get(0).setPrice(account.getCustomerPricing().getPrices().get(0).getPrice());
+//            messageResult.setAccountKey(accountKey);
+//            ds.save(messageResult);
+
+            SendMessageResultItem item = messageResult.getSendMessageResults().get(0);
+            item.setPrice(account.getCustomerPricing().getPrices().get(0).getPrice());
+            fsmr.getSendMessageResults().add(item);
+
+
         }
+        ds.save(fsmr);
 
         double balance = client.getCustomerProfileClient().getAccountBalance().getBalance();
         logger.info("New balance: {}", balance);
 
         UpdateOperations<Account> updateOperations = ds.createUpdateOperations(Account.class).set("accountBalance.balance", balance);
         UpdateResults<Account> updateResults = ds.update(ds.createQuery(Account.class).field("_id").equal(accountKey), updateOperations);
+
+        return fsmr;
 
     }
 

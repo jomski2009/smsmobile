@@ -4,43 +4,44 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.imanmobile.sms.oneapi.model.common.ResourceReference;
 import org.mongodb.morphia.annotations.Entity;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity("smsresults")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SendMessageResult {
-     private String accountKey;
-	private String clientCorrelator;
-	private SendMessageResultItem[] sendMessageResults;
-	private ResourceReference resourceReference;
-	
-	public SendMessageResult() {
-		super();
-	}
+    private String accountKey;
+    private String clientCorrelator;
+    private List<SendMessageResultItem> sendMessageResults = new ArrayList<>();
+    private ResourceReference resourceReference;
 
-	public String getClientCorrelator() {
-		return clientCorrelator;
-	}
+    public SendMessageResult() {
+        super();
+    }
 
-	public void setClientCorrelator(String clientCorrelator) {
-		this.clientCorrelator = clientCorrelator;
-	}
+    public String getClientCorrelator() {
+        return clientCorrelator;
+    }
 
-	public SendMessageResultItem[] getSendMessageResults() {
-		return sendMessageResults;
-	}
+    public void setClientCorrelator(String clientCorrelator) {
+        this.clientCorrelator = clientCorrelator;
+    }
 
-	public void setSendMessageResults(SendMessageResultItem[] sendMessageResults) {
-		this.sendMessageResults = sendMessageResults;
-	}
+    public List<SendMessageResultItem> getSendMessageResults() {
+        return sendMessageResults;
+    }
 
-	public ResourceReference getResourceReference() {
-		return resourceReference;
-	}
+    public void setSendMessageResults(List<SendMessageResultItem> sendMessageResults) {
+        this.sendMessageResults = sendMessageResults;
+    }
 
-	public void setResourceReference(ResourceReference resourceReference) {
-		this.resourceReference = resourceReference;
-	}
+    public ResourceReference getResourceReference() {
+        return resourceReference;
+    }
+
+    public void setResourceReference(ResourceReference resourceReference) {
+        this.resourceReference = resourceReference;
+    }
 
     public String getAccountKey() {
         return accountKey;
@@ -51,9 +52,9 @@ public class SendMessageResult {
     }
 
     @Override
-	public String toString() {
-		return "SendMessageResult {clientCorrelator=" + clientCorrelator
-				+ ", sendMessageResults=" + Arrays.toString(sendMessageResults)
-				+ ", resourceReference=" + resourceReference + "}";
-	}	
+    public String toString() {
+        return "SendMessageResult {clientCorrelator=" + clientCorrelator
+                + ", sendMessageResults=" + sendMessageResults.toString()
+                + ", resourceReference=" + resourceReference + "}";
+    }
 }

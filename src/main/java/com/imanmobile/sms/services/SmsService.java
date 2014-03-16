@@ -12,5 +12,5 @@ public interface SmsService {
     Map<String, Object> sendSms(String message);
 
     SendMessageResult sendQuickSms(String message, String[] recipients);
-    void sendBulkSms(BulkMessageDTO bulkMessage);
+    SendMessageResult sendBulkSms(BulkMessageDTO bulkMessage);
 }

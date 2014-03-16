@@ -80,7 +80,8 @@ public class SmsController {
         dto.setGroupid(groupid);
         dto.setMessagedescription(messagedescription);
         log.info(dto.toString());
-        smsService.sendBulkSms(dto);
+        SendMessageResult messageResult = smsService.sendBulkSms(dto);
+
 
         model.addAttribute("fieldlist", getFieldList());
         addGroupListToModel(model);
